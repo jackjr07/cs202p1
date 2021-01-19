@@ -12,10 +12,10 @@ class product{
         ~product();
         int add_product();
         int display_product();
+        int add_product_p(char * product_a);
 
     private:
         char * pro_name;
-        int add_product_p(char * product_a);
         int display_product_p(node * curr);
 
 };

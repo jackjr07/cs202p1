@@ -19,7 +19,8 @@ int product::add_product(){
 };
 
 int product::add_product_p(char * product_a){
-    
+    pruduct = new char[strlen(product_a) + 1];
+    strcpy(produ
 
 
 }
