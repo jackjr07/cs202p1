@@ -108,7 +108,7 @@ int database::display_database_p(node * curr){
 }
 
 int database::find_user(char * f_name){
-    char * u_name = new char[strlen(u_name) + 1];
+    char * u_name = new char[strlen(f_name) + 1];
     strcpy(u_name, f_name);
     if(!head){
         cout << "No user in database" << endl;
@@ -117,7 +117,7 @@ int database::find_user(char * f_name){
     //cout << u_name << "\\" << f_name << endl;
     node * curr = head;
     while(curr){
-        if(strcmp(u_name, curr->user_obj.user_name) != 0){
+        if(strcmp(u_name, curr->user_obj.user_name) == 0){
             cout << "passed" << endl;
             cout << "Your city: " << curr->user_obj.user_city << endl;
             cout << "Your state: " << curr->user_obj.user_state << endl;
