@@ -55,7 +55,7 @@ int user::add_user_p(char * name, char * city, char * state, char * status){
 
 int user::display_user(){
     cout << "Your name: " <<user_name << endl;
-    cout << "Your address: " << user_city << user_state << endl;
+    cout << "Your address: " << user_city << ", "<< user_state << endl;
     cout << "Your status: " << user_status << endl;
     return 1;   
 };
@@ -105,4 +105,25 @@ int database::display_database_p(node * curr){
         curr = curr->next;
    }
     return 1;
+}
+
+int database::find_user(char * f_name){
+    char * u_name = new char[strlen(u_name) + 1];
+    strcpy(u_name, f_name);
+    if(!head){
+        cout << "No user in database" << endl;
+        return 0;
+    };
+    //cout << u_name << "\\" << f_name << endl;
+    node * curr = head;
+    while(curr){
+        if(strcmp(u_name, curr->user_obj.user_name) != 0){
+            cout << "passed" << endl;
+            cout << "Your city: " << curr->user_obj.user_city << endl;
+            cout << "Your state: " << curr->user_obj.user_state << endl;
+            cout << "Your status: " << curr->user_obj.user_status << endl;
+        }
+        curr = curr -> next;
+    };
+    return 3;
 }

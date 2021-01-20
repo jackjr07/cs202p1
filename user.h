@@ -15,14 +15,14 @@ class user{
         int add_user();
         int display_user();
 
-    private:
-        int add_user_p(char * name, char * city, char * state, char * status);
         char * user_name;
         char * user_city;
         char * user_state;
         char * user_status;
+    private:
+        int add_user_p(char * name, char * city, char * state, char * status);
+        
 };
-
 struct node{
     user user_obj;
     node * next;
@@ -34,7 +34,7 @@ class database:public user{
         ~database();
         int add_database(user & user_obj_a);
         int display_database();
-
+        int find_user(char * f_name);
     private:
         int display_database_p(node * curr);
         node * head;
