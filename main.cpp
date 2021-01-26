@@ -44,8 +44,8 @@ int main (){
             char product_n[20];
             cout << "Product name: " ;
             cin.get(product_n,20); cin.ignore(100,'\n');
-            product_obj.check_product(product_n);
-
+            order_obj = product_obj.check_product(product_n);
+            database_obj.prod_find_user("j2");
         }
         else if(answer == 8){
             char u_name[20];

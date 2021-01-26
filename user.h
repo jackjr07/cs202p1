@@ -34,11 +34,13 @@ class database:public user{
         int display_database();
         user * find_user(char * f_name);
         user * prod_find_user(char * f_name);
+        user get_user(char * f_name);
 
     private:
         int display_database_p(user * curr);
         user * find_user(user * curr, char * u_name);
         user * prod_find_user(user * curr, char * f_name);
+        user get_user(user * curr, char * f_name);
         user * head;
 
 };

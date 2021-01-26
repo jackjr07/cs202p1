@@ -111,9 +111,6 @@ int order::putin_order(stack_p * match){
      cout << "What's your name: ";
      cin.get(u_name,20); cin.ignore(100,'\n');
     
-     char * buyer = new char[strlen(u_name)+1];
-     strcpy(buyer, u_name);
-
      stack_p * ordered = new stack_p();
      ordered->order_obj.order_name = new char [strlen(match->prod_obj.product_name) +1];
      strcpy(ordered->order_obj.order_name, match->prod_obj.product_name);
@@ -122,19 +119,18 @@ int order::putin_order(stack_p * match){
      strcpy(ordered->order_obj.order_seller, match->prod_obj.seller);
     
      ordered->order_obj.order_buyer = new char [strlen(u_name) +1];
-     strcpy(ordered->order_obj.order_buyer, buyer);
+     strcpy(ordered->order_obj.order_buyer, u_name);
      return shipping(ordered);
 };
 
-int order::shipping(stack_p * ordered){
+stack_p * order::shipping(stack_p * ordered){
    if(!ordered) return 0;
-   user * buyer;
    user * seller;
-   database user_db;
+   //database user_db;
    cout << ordered->order_obj.order_buyer << endl;
    cout << ordered->order_obj.order_seller << endl;
-   buyer = prod_find_user(ordered->order_obj.order_buyer);
-   cout << buyer->display_user() << endl;
+   return ordered;
+  // cout << buyer->user_city << endl;
   /* 
    buyer = user_db.find_user(ordered->order_obj.order_buyer);
    cout << "Buyer's city: " << buyer->user_city << endl;

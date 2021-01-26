@@ -71,7 +71,7 @@ user * user::get_next(user * curr){
         return get_next(curr->next);
     }
     return curr;
-}
+};
 
 //DATABASE SECTION
 database::database(){
@@ -104,10 +104,10 @@ int database::add_database(user & user_obj_a){
     curr -> next = add;
     cout << "Add User Succeess" << endl;
     return 1;
-}
+};
 int database::display_database(){
    return display_database_p(head);
-}
+};
 
 int database::display_database_p(user * curr){
    if(!curr){
@@ -118,7 +118,7 @@ int database::display_database_p(user * curr){
    if(!curr->next) return 0;
    return display_database_p(curr->next);
 
-}
+};
 
 user * database::find_user(char * f_name){
     char * u_name = new char[strlen(f_name) + 1];
@@ -131,7 +131,7 @@ user * database::prod_find_user(char * f_name){
         cout << "passed to prod" <<f_name << endl;
     }
     return prod_find_user(head,f_name);
-}
+};
 
 user * database::prod_find_user(user * curr, char * f_name){
     if(!curr) {
@@ -143,7 +143,7 @@ user * database::prod_find_user(user * curr, char * f_name){
         return curr;
     };
     return prod_find_user(curr->next, f_name);
-}
+};
 
 user *  database::find_user(user * curr, char * u_name){
     if(!curr){
