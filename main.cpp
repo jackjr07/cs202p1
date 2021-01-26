@@ -44,7 +44,7 @@ int main (){
             char product_n[20];
             cout << "Product name: " ;
             cin.get(product_n,20); cin.ignore(100,'\n');
-            product_obj.check_product(order_obj,product_n);
+            product_obj.check_product(product_n);
 
         }
         else if(answer == 8){
@@ -52,7 +52,6 @@ int main (){
             cout << "What is your name: ";
             cin.get(u_name,20); cin.ignore(100,'\n');
             database_obj.find_user(u_name);
-
         }
     }while(answer != 9);
     cout << "Thank you !!!" << endl;

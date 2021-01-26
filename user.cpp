@@ -60,6 +60,13 @@ int user::display_user(){
     return 1;   
 };
 
+user * user::get_next(user * curr){
+    if(curr->next){
+        return get_next(curr->next);
+    }
+    return curr;
+}
+
 //DATABASE SECTION
 database::database(){
    head = NULL; 
@@ -67,63 +74,65 @@ database::database(){
 
 database::~database(){
     if(head){
-        node * temp = new node;
+        user * temp = new user;
         delete head;
         head = temp;
     }
 };
 
 int database::add_database(user & user_obj_a){
-    node * add = new node;
-    add -> user_obj = user_obj_a;
+    user * add = new user();
+    add->user_name = user_obj_a.user_name;
+    add->user_city = user_obj_a.user_city;
+    add->user_state = user_obj_a.user_state;
+    add->user_status = user_obj_a.user_status;        
     add -> next = NULL;
 
     if(!head){
         head = add;
-        cout << "Added to head" <<endl;
-        return 1;
-    }
-    node * curr =   head;
-    while(curr->next){
-            curr = curr->next;
-    }
-    curr->next = add;
-    cout << "Add success" << endl;
-   return 1;
+        cout << "Added to head" << endl;
+        return 2;
+    };
+
+    user * curr = get_next(head);
+    curr -> next = add;
+    cout << "Add User Succeess" << endl;
+    return 1;
 }
 int database::display_database(){
    return display_database_p(head);
 }
 
-int database::display_database_p(node * curr){
+int database::display_database_p(user * curr){
    if(!curr){
         cout << "Nothing is in the system" << endl;
         return 0;
    }
-   while(curr){
-        curr->user_obj.display_user();
-        curr = curr->next;
-   }
-    return 1;
+   curr->display_user();
+   if(!curr->next) return 0;
+   return display_database_p(curr->next);
+
 }
 
-int database::find_user(char * f_name){
+user * database::find_user(char * f_name){
     char * u_name = new char[strlen(f_name) + 1];
     strcpy(u_name, f_name);
-    if(!head){
+    return find_user(head, u_name);
+};
+
+user * database::prod_find_user(char * f_name){
+    return find_user(head,f_name);
+}
+
+user *  database::find_user(user * curr, char * u_name){
+    if(!curr){
         cout << "No user in database" << endl;
         return 0;
     };
-    //cout << u_name << "\\" << f_name << endl;
-    node * curr = head;
-    while(curr){
-        if(strcmp(u_name, curr->user_obj.user_name) == 0){
-            cout << "passed" << endl;
-            cout << "Your city: " << curr->user_obj.user_city << endl;
-            cout << "Your state: " << curr->user_obj.user_state << endl;
-            cout << "Your status: " << curr->user_obj.user_status << endl;
-        }
-        curr = curr -> next;
+    if(strcmp(u_name, curr->user_name) == 0){
+        curr->display_user();
+        return curr;
     };
-    return 3;
-}
+    return find_user(curr->next, u_name);
+};
+

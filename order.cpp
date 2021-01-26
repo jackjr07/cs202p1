@@ -7,13 +7,13 @@
 using namespace std;
 
 product::product(){
-    top = NULL;
+    top_prod = NULL;
 };
 product::~product(){
-    if(top){
+    if(top_prod){
         stack_p * temp = new stack_p;
-        delete top;
-        top = temp;
+        delete top_prod;
+        top_prod = temp;
     }
 };
 
@@ -26,24 +26,24 @@ int product::add_product_p(char * product_a, char * seller_a){
 }
 
 int product::stack_push(){
-    if(!top){
+    if(!top_prod){
         stack_p * temp = new stack_p();
-        temp -> product_obj.product_name = product_name;
-        temp -> product_obj.seller = seller;
+        temp -> prod_obj.product_name = product_name;
+        temp -> prod_obj.seller = seller;
         temp -> next = NULL;
-        top = temp;
+        top_prod= temp;
        return 1;
     }
     stack_p * temp = new stack_p();
-    temp -> product_obj.product_name = product_name;
-    temp -> product_obj.seller = seller;
-    temp ->next = top;
-    top = temp;
+    temp -> prod_obj.product_name = product_name;
+    temp -> prod_obj.seller = seller;
+    temp ->next = top_prod;
+    top_prod = temp;
     return 1;
 };
 
 int product::display_product(){
-    return display_product_p(top);
+    return display_product_p(top_prod);
 };
 
 int product::display_product_p(stack_p * curr){
@@ -51,29 +51,34 @@ int product::display_product_p(stack_p * curr){
         cout << "Nothing in the product" << endl;
         return 0;
     }
-    while(curr){
-        cout << "Product name: " <<  curr->product_obj.product_name << endl;
-        cout << "Seller is: " << curr->product_obj.seller << endl;
-        curr = curr->next;
-    }
-    return 1;
+    cout << "Product name: " <<  curr->prod_obj.product_name << endl;
+    cout << "Seller is: " << curr->prod_obj.seller << endl;
+    if(!curr->next) return 0;
+    return display_product_p(curr->next);
 };
 
-int product::check_product(order order_obj,char * product_n){
+int product::check_product(char * product_n){
     if(!product_n) return 3;
-    stack_p * curr = top;
+    char * prod_n = new char[strlen(product_n)+1];
+    strcpy(prod_n, product_n);
+    stack_p * curr = top_prod;
     if(!curr){
         cout << "No product in database" << endl;
         return 0;
     }
-    while(curr){
-        if(strcmp(product_n, curr->product_obj.product_name) != 0) return order_obj.putin_order(curr);
-        else{
-        curr = curr -> next;
-        }
+    return check_product(curr, prod_n);
+};
+int product::check_product(stack_p * curr, char * prod_n){
+    
+    if(strcmp(prod_n, curr->prod_obj.product_name) == 0){
+        order order_obj;
+       return order_obj.putin_order(curr); 
+    } 
+    if(!curr->next){
+        return 0;
     }
-    cout << "No match" << endl;
-    return 0;
+    return check_product(curr->next, prod_n);
+
 };
 /*
         order();
@@ -100,14 +105,57 @@ order::~order(){
 };
 
 int order::putin_order(stack_p * match){
-     //cout << "Passed" << endl; 
      char u_name[20];
-     cout << "Ordered: " << match->product_obj.product_name << endl;
-     cout << "By seller: " << match->product_obj.seller << endl;
-    cout << "What is your name: ";
-    cin.get(u_name, 20);
+     cout << "Ordered: " << match->prod_obj.product_name << endl;
+     cout << "By seller: " << match->prod_obj.seller << endl;
+     cout << "What's your name: ";
+     cin.get(u_name,20); cin.ignore(100,'\n');
+    
+     char * buyer = new char[strlen(u_name)+1];
+     strcpy(buyer, u_name);
 
-     
+     stack_p * ordered = new stack_p();
+     ordered->order_obj.order_name = match->prod_obj.product_name;
+     ordered->order_obj.order_seller = match->prod_obj.seller;
+     strcpy(ordered->order_obj.order_buyer, buyer);
+     return shipping(ordered);
+};
 
+int order::shipping(stack_p * ordered){
+   if(!ordered) return 0;
+   user * buyer;
+   user * seller;
+   database user_db;
+   cout << ordered->order_obj.order_buyer << endl;
+   cout << ordered->order_obj.order_seller << endl;
+   buyer = prod_find_user(ordered->order_obj.order_buyer);
+   cout << buyer->display_user() << endl;
+  /* 
+   buyer = user_db.find_user(ordered->order_obj.order_buyer);
+   cout << "Buyer's city: " << buyer->user_city << endl;
+   cout << "Buyer's state: " << buyer->user_state << endl;
+
+   seller = user_db.find_user(ordered->order_obj.order_seller);
+   cout << "Seller's city: " << seller->user_city << endl;
+   cout << "Seller's state: " << seller->user_state << endl;
+  */ 
+
+   return 1;
+};
+
+int cal_shipping(char * lo_seller, char * lo_buyer){
+
+    return 0;    
+}
+
+stack_p::stack_p(){
+    next = NULL;
+};
+stack_p::~stack_p(){
+    if(next){
+        stack_p * temp = new stack_p();
+        temp->next = NULL;
+        next = temp;
+    }
 };
 
