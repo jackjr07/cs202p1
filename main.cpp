@@ -41,18 +41,21 @@ int main (){
             product_obj.display_product();
         }
         else if(answer == 5){
-            char product_n[20];
+            char product_a[20];
             char buyer_n[20];
             cout << "Product name: " ;
-            cin.get(product_n,20); cin.ignore(100,'\n');
-            char * seller_n = product_obj.check_product(product_n);
+            cin.get(product_a,20); cin.ignore(100,'\n');
+            char * product_n = new char [strlen(product_a) +1];
+            strcpy(product_n, product_a);
+            char * seller_n = product_obj.check_product(product_a);
             cout << "Your name: ";
             cin.get(buyer_n,20); cin.ignore(100,'\n');
             user * buyer = database_obj.prod_find_user(buyer_n);
+            cout << seller_n << endl;
             user * seller = database_obj.prod_find_user(seller_n);
             cout << "Buyer's location: " << buyer->user_city << endl;
             cout << "Seller's location: " << seller->user_city << endl;
-            order_obj.shipping(buyer, seller);
+            order_obj.shipping(product_n,buyer, seller);
             
         }
         else if(answer == 6){

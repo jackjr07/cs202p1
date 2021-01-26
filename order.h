@@ -30,9 +30,9 @@ class order: public product{
         ~order();
         char * putin_order(stack_p * match);
         int display_order();
-        int shipping(user * buyer, user * seller); 
+        int shipping(char * product_n, user * buyer, user * seller); 
         int cal_shipping(char * lo_seller, char * lo_buyer);
-        int order_push();
+        int order_push(char * product_n, user * buyer, user * seller, char * method_n);
 
     private:
         int display_order(stack_p * curr);

@@ -126,42 +126,61 @@ char * order::putin_order(stack_p * match){
     cout << "==================================" << endl;
     order_name = match->prod_obj.product_name;
     order_seller = match->prod_obj.seller;
-    return match->prod_obj.seller;
+    char * seller_n = new char [strlen(order_seller) +1];
+    strcpy(seller_n, order_seller);
+
+    return seller_n;
      
 };
 
-int order::shipping(user * buyer, user * seller){
+int order::shipping(char * product_n, user * buyer, user * seller){
+    char * method_n;
+
     if(!buyer || !seller) return 0;
     if(strcmp(buyer->user_city, seller->user_city) == 0){
         cout << "Shipping by Truck " << endl;
-        order_method = "Truck";
+        method_n = new char[strlen("Truck") + 1];
+        strcpy(method_n, "Truck");
     }
     else if(strcmp(buyer->user_state, seller->user_state) == 0){
         cout << "Shipping by Train " << endl;
-        order_method = "Train";
+        method_n = new char[strlen("Train") + 1];
+        strcpy(method_n, "Train");
     }
     else{
         cout << "Shipping by air " << endl;
-        order_method = "air";
+        method_n = new char[strlen("Air") + 1];
+        strcpy(method_n, "Air");
     }
-    return order_push();
+    return order_push(product_n,buyer,seller,method_n);
 };
 
-int order::order_push(){
+int order::order_push(char * product_n, user * buyer, user * seller, char * method_n){
+    
+    cout << "Confirmation \n";
+    cout << product_n << endl;
+    cout << buyer->user_name << endl;
+    cout << seller->user_name <<endl;
+    cout << method_n << endl;
+    cout << "==================================" << endl;
     if(!top_order){
         stack_p * temp = new stack_p;
-        temp->order_obj.order_name = order_name;
-        temp->order_obj.order_seller = order_seller;
-        temp->order_obj.order_method = order_method;
+        temp->order_obj.order_name = product_n;
+        temp->order_obj.order_seller = seller->user_name;
+        temp->order_obj.order_buyer = buyer->user_name;
+        temp->order_obj.order_method = method_n;
         temp -> next = NULL;
         top_order = temp;
-    }
+        return 2;
+    }else{
         stack_p * temp = new stack_p;
-        temp->order_obj.order_name = order_name;
-        temp->order_obj.order_seller = order_seller;
-        temp->order_obj.order_method = order_method;
+        temp->order_obj.order_name = product_n;
+        temp->order_obj.order_seller = seller->user_name;
+        temp->order_obj.order_buyer = buyer->user_name;
+        temp->order_obj.order_method = method_n;
         temp -> next = top_order;
         top_order = temp;
+      }
     return 1;
 }
 
