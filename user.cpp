@@ -63,6 +63,7 @@ int user::display_user(){
     if(user_status){
     cout << "Your status: " << user_status << endl;
     }
+    cout << "==================================" << endl;
     return 1;   
 };
 
@@ -130,6 +131,7 @@ user * database::prod_find_user(char * f_name){
     if(f_name){
         cout << "passed to prod" <<f_name << endl;
     }
+
     return prod_find_user(head,f_name);
 };
 

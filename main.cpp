@@ -42,10 +42,21 @@ int main (){
         }
         else if(answer == 5){
             char product_n[20];
+            char buyer_n[20];
             cout << "Product name: " ;
             cin.get(product_n,20); cin.ignore(100,'\n');
-            order_obj = product_obj.check_product(product_n);
-            database_obj.prod_find_user("j2");
+            char * seller_n = product_obj.check_product(product_n);
+            cout << "Your name: ";
+            cin.get(buyer_n,20); cin.ignore(100,'\n');
+            user * buyer = database_obj.prod_find_user(buyer_n);
+            user * seller = database_obj.prod_find_user(seller_n);
+            cout << "Buyer's location: " << buyer->user_city << endl;
+            cout << "Seller's location: " << seller->user_city << endl;
+            order_obj.shipping(buyer, seller);
+            
+        }
+        else if(answer == 6){
+            order_obj.display_order();
         }
         else if(answer == 8){
             char u_name[20];
@@ -65,6 +76,7 @@ int menu(int &answer){
     cout << "[3] Add your Product \n";
     cout << "[4] Display all products \n";
     cout << "[5] Put in order \n";
+    cout << "[6] Look all order\n";
     cout << "[8] See your account \n";
     cout << "[9] Exit the program\n";
     cin >> answer;
