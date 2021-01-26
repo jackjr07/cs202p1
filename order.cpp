@@ -115,8 +115,13 @@ int order::putin_order(stack_p * match){
      strcpy(buyer, u_name);
 
      stack_p * ordered = new stack_p();
-     ordered->order_obj.order_name = match->prod_obj.product_name;
-     ordered->order_obj.order_seller = match->prod_obj.seller;
+     ordered->order_obj.order_name = new char [strlen(match->prod_obj.product_name) +1];
+     strcpy(ordered->order_obj.order_name, match->prod_obj.product_name);
+
+     ordered->order_obj.order_seller = new char [strlen(match->prod_obj.seller) +1];
+     strcpy(ordered->order_obj.order_seller, match->prod_obj.seller);
+    
+     ordered->order_obj.order_buyer = new char [strlen(u_name) +1];
      strcpy(ordered->order_obj.order_buyer, buyer);
      return shipping(ordered);
 };

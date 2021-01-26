@@ -54,9 +54,15 @@ int user::add_user_p(char * name, char * city, char * state, char * status){
 
 
 int user::display_user(){
+    if(user_name){
     cout << "Your name: " <<user_name << endl;
+    }
+    if(user_city && user_state){
     cout << "Your address: " << user_city << ", "<< user_state << endl;
+    }
+    if(user_status){
     cout << "Your status: " << user_status << endl;
+    }
     return 1;   
 };
 
@@ -121,7 +127,22 @@ user * database::find_user(char * f_name){
 };
 
 user * database::prod_find_user(char * f_name){
-    return find_user(head,f_name);
+    if(f_name){
+        cout << "passed to prod" <<f_name << endl;
+    }
+    return prod_find_user(head,f_name);
+}
+
+user * database::prod_find_user(user * curr, char * f_name){
+    if(!curr) {
+        cout << "Can't find user" << endl;
+        return 0;
+    }
+    
+    if(strcmp(f_name, curr->user_name) == 0){
+        return curr;
+    };
+    return prod_find_user(curr->next, f_name);
 }
 
 user *  database::find_user(user * curr, char * u_name){

@@ -38,6 +38,7 @@ class database:public user{
     private:
         int display_database_p(user * curr);
         user * find_user(user * curr, char * u_name);
+        user * prod_find_user(user * curr, char * f_name);
         user * head;
 
 };
