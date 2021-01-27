@@ -13,7 +13,7 @@ int main (){
     user user_obj;
     database database_obj;
     product product_obj;
-    order order_obj;
+    order_list list_obj;
     int answer = 0;
     cout << "Welcome to Jack's distribution system" << endl;
     //Start the program
@@ -41,6 +41,7 @@ int main (){
             product_obj.display_product();
         }
         else if(answer == 5){
+            order order_obj;
             char product_a[20];
             char buyer_n[20];
             cout << "Product name: " ;
@@ -56,10 +57,11 @@ int main (){
             cout << "Buyer's location: " << buyer->user_city << endl;
             cout << "Seller's location: " << seller->user_city << endl;
             order_obj.shipping(product_n,buyer, seller);
+            list_obj.add_order(order_obj);
             
         }
         else if(answer == 6){
-            order_obj.display_order();
+            list_obj.display_list();
         }
         else if(answer == 8){
             char u_name[20];

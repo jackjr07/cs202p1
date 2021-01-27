@@ -106,12 +106,18 @@ stack_p::~stack_p(){
 
 order::order(){
     order_buyer = order_name = order_seller = order_method = NULL;
+    next = NULL;
 };
 order::~order(){
     if(order_name) delete [] order_name;
     if(order_buyer) delete [] order_buyer;
     if(order_seller) delete [] order_seller;
     if(order_method) delete [] order_method;
+    if(next){
+      order * temp = new order();
+      delete next;
+      next = temp;
+    }
 };
 
 int order::display_order(){
@@ -195,10 +201,14 @@ order_list::~order_list(){
 };
 int order_list::add_order(order & order_obj){
     order * add = new order();
-    add->order_name = order_obj.order_name;
-    add->order_buyer = order_obj.order_buyer;
-    add->order_seller = order_obj.order_seller;
-    add->order_method = order_obj.order_method;
+    add->order_name = new char[strlen(order_obj.order_name) +1]; 
+    strcpy(add->order_name, order_obj.order_name);
+    add->order_buyer = new char[strlen(order_obj.order_buyer) + 1];
+    strcpy(add->order_buyer,order_obj.order_buyer);
+    add->order_seller = new char[strlen(order_obj.order_seller) +1];
+    strcpy(add->order_seller, order_obj.order_seller);
+    add->order_method = new char[strlen(order_obj.order_method) +1];
+    strcpy(add->order_method, order_obj.order_method);
     add -> next = NULL;
     if(!head){
       head = add;
@@ -219,6 +229,6 @@ int order_list::display_list(order * curr){
       cout << "No order in database" << endl;
     };
     curr->display_order();
-    if(!curr) return 0;
+    if(!curr->next) return 0;
     return display_list(curr->next);
 };

@@ -33,7 +33,6 @@ class stack_p: public product{
         int stack_push();
         product prod_obj;
         stack_p * next;
-    private:
 };
 
 class order: public product{
