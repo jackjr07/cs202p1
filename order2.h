@@ -17,41 +17,50 @@ class product: public database{
         char * seller;
         char *  check_product(char * product_n);
         char * check_product(stack_p * curr, char * product_n);
+        stack_p * get_next();
     private:
         stack_p * top_prod;
         int display_product_p(stack_p * curr);
         int stack_push();
+        stack_p * get_next(stack_p * curr);
 
+};
+
+class stack_p: public product{
+    public: 
+        stack_p();
+        ~stack_p();
+        int stack_push();
+        product prod_obj;
+        stack_p * next;
+    private:
 };
 
 class order: public product{
     public:
         order();
         ~order();
-        char * putin_order(stack_p * match);
         int display_order();
         int shipping(char * product_n, user * buyer, user * seller); 
-        int cal_shipping(char * lo_seller, char * lo_buyer);
         int order_push(char * product_n, user * buyer, user * seller, char * method_n);
-
-    private:
-        int display_order(stack_p * curr);
-        stack_p * top_order;
-        int order_status;
+        order * get_next(order * curr);
+        order * next;
         char * order_name;
         char * order_seller;
         char * order_buyer;
         char * order_method;
-};
-
-class stack_p: public order{
-    public: 
-        stack_p();
-        ~stack_p();
-        int stack_push();
-        product prod_obj;
-        order order_obj;
-        stack_p * next;
     private:
 };
 
+
+class order_list: public order{
+  public:
+      order_list();
+      ~order_list();
+      int add_order(order & order_obj);
+      int display_list();
+
+  private:
+      int display_list(order * curr);
+      order * head;
+};

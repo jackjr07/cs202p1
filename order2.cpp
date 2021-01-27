@@ -2,7 +2,7 @@
  *This contains all the functionalities for order system
  *
  * */
-#include "order.h"
+#include "order2.h"
 
 using namespace std;
 
@@ -53,6 +53,7 @@ int product::display_product_p(stack_p * curr){
     }
     cout << "Product name: " <<  curr->prod_obj.product_name << endl;
     cout << "Seller is: " << curr->prod_obj.seller << endl;
+    cout << "=================================" <<endl;
     if(!curr->next) return 0;
     return display_product_p(curr->next);
 };
@@ -72,8 +73,7 @@ char * product::check_product(char * product_n){
 char * product::check_product(stack_p * curr, char * prod_n){
     
     if(strcmp(prod_n, curr->prod_obj.product_name) == 0){
-        order order_obj;
-       return order_obj.putin_order(curr); 
+       return curr->prod_obj.seller;
     } 
     if(!curr->next){
         return 0;
@@ -82,56 +82,55 @@ char * product::check_product(stack_p * curr, char * prod_n){
 
 };
 
+stack_p * product::get_next(){
+  return top_prod;
+};
+
+stack_p * product::get_next(stack_p * curr){
+  if(curr->next){
+    return get_next(curr->next); 
+  }
+  return curr;
+};
+
+stack_p::stack_p(){
+    next = NULL;
+};
+stack_p::~stack_p(){
+    if(next){
+        stack_p * temp = new stack_p();
+        temp->next = NULL;
+        next = temp;
+    }
+};
+
 order::order(){
-    top_order = NULL;
-    order_status = 0;
-    order_name = order_seller = order_method = NULL;
+    order_buyer = order_name = order_seller = order_method = NULL;
 };
 order::~order(){
-    if(top_order){
-        stack_p * temp = new stack_p();
-        delete top_order;
-        top_order = temp;
-    }
     if(order_name) delete [] order_name;
+    if(order_buyer) delete [] order_buyer;
     if(order_seller) delete [] order_seller;
     if(order_method) delete [] order_method;
-    order_status = 0;
 };
-
 
 int order::display_order(){
-    return display_order(top_order);
+  if(order_name){
+    cout << "Product name: " << order_name << endl;
+  }
+  if(order_buyer){
+    cout << "ordered by: " << order_buyer << endl;
+  }
+  if(order_seller){
+    cout << "Sell by: " << order_seller << endl;
+  }
+  if(order_method){
+    cout << "Shipping: " << order_method << endl;
+    cout << "=============================" << endl;
+  }
+  
+  return 1;
 }
-
-int order::display_order(stack_p * curr){
-    if(!curr){
-        cout << "No order in line" << endl;
-        return 0;
-    }
-    cout << "Ordered: " << curr->order_obj.order_name << endl;
-    cout << "By seller: " << curr->order_obj.order_seller << endl;
-    cout << "By buyer: " << curr->order_obj.order_buyer << endl;
-    cout << "Shipping Method: " << curr->order_obj.order_method << endl;
-    cout << "==================================" << endl;
-    if(!curr->next) return 0;
-    return display_order(curr->next);
-
-}
-
-
-char * order::putin_order(stack_p * match){
-     cout << "Ordered: " << match->prod_obj.product_name << endl;
-     cout << "By seller: " << match->prod_obj.seller << endl;
-    cout << "==================================" << endl;
-    order_name = match->prod_obj.product_name;
-    order_seller = match->prod_obj.seller;
-    char * seller_n = new char [strlen(order_seller) +1];
-    strcpy(seller_n, order_seller);
-
-    return seller_n;
-     
-};
 
 int order::shipping(char * product_n, user * buyer, user * seller){
     char * method_n;
@@ -156,47 +155,70 @@ int order::shipping(char * product_n, user * buyer, user * seller){
 };
 
 int order::order_push(char * product_n, user * buyer, user * seller, char * method_n){
-    
     cout << "Confirmation \n";
     cout << product_n << endl;
     cout << buyer->user_name << endl;
     cout << seller->user_name <<endl;
     cout << method_n << endl;
     cout << "==================================" << endl;
-    if(!top_order){
-        stack_p * temp = new stack_p;
-        temp->order_obj.order_name = product_n;
-        temp->order_obj.order_seller = seller->user_name;
-        temp->order_obj.order_buyer = buyer->user_name;
-        temp->order_obj.order_method = method_n;
-        temp -> next = NULL;
-        top_order = temp;
-        return 2;
-    }else{
-        stack_p * temp = new stack_p;
-        temp->order_obj.order_name = product_n;
-        temp->order_obj.order_seller = seller->user_name;
-        temp->order_obj.order_buyer = buyer->user_name;
-        temp->order_obj.order_method = method_n;
-        temp -> next = top_order;
-        top_order = temp;
-      }
+    
+    order_name = new char[strlen(product_n) + 1];
+    strcpy(order_name, product_n);
+    order_buyer = new char[strlen(buyer->user_name) + 1];
+    strcpy(order_buyer, buyer->user_name);
+    order_seller = new char[strlen(seller->user_name) + 1];
+    strcpy(order_seller, seller->user_name);
+    order_method = new char[strlen(method_n)+1];
+    strcpy(order_method, method_n);
+    
     return 1;
-}
-
-int cal_shipping(char * lo_seller, char * lo_buyer){
-
-    return 0;    
-}
-
-stack_p::stack_p(){
-    next = NULL;
-};
-stack_p::~stack_p(){
-    if(next){
-        stack_p * temp = new stack_p();
-        temp->next = NULL;
-        next = temp;
-    }
 };
 
+order * order::get_next(order * curr){
+   if(curr->next) {
+      return get_next(curr->next);
+   };
+   return curr;
+};
+
+order_list::order_list(){
+  head = NULL;
+
+};
+order_list::~order_list(){
+  if(head){
+    order * temp = new order;
+    delete head;
+    head = temp;
+  }
+
+};
+int order_list::add_order(order & order_obj){
+    order * add = new order();
+    add->order_name = order_obj.order_name;
+    add->order_buyer = order_obj.order_buyer;
+    add->order_seller = order_obj.order_seller;
+    add->order_method = order_obj.order_method;
+    add -> next = NULL;
+    if(!head){
+      head = add;
+      return 2;
+    };
+    order * curr = get_next(head);
+    curr->next = add;
+    cout << "Add order success" << endl;
+    return 1;
+};
+
+int order_list::display_list(){
+    return display_list(head);
+};
+
+int order_list::display_list(order * curr){
+    if(!curr){
+      cout << "No order in database" << endl;
+    };
+    curr->display_order();
+    if(!curr) return 0;
+    return display_list(curr->next);
+};

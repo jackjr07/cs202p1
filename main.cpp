@@ -3,7 +3,7 @@
 This is the user interface for program#1
 */ 
 
-#include"order.h"
+#include"order2.h"
 
 using namespace std;
 
@@ -50,8 +50,8 @@ int main (){
             char * seller_n = product_obj.check_product(product_a);
             cout << "Your name: ";
             cin.get(buyer_n,20); cin.ignore(100,'\n');
+            cout << "============================";
             user * buyer = database_obj.prod_find_user(buyer_n);
-            cout << seller_n << endl;
             user * seller = database_obj.prod_find_user(seller_n);
             cout << "Buyer's location: " << buyer->user_city << endl;
             cout << "Seller's location: " << seller->user_city << endl;
