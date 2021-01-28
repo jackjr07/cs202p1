@@ -6,9 +6,12 @@
 
 using namespace std;
 
+//Product constructor
 product::product(){
     top_prod = NULL;
 };
+
+//Product deconstructor
 product::~product(){
     if(top_prod){
         stack_p * temp = new stack_p;
@@ -17,6 +20,7 @@ product::~product(){
     }
 };
 
+//Add information for the product from the seller
 int product::add_product_p(char * product_a, char * seller_a){
     product_name = new char[strlen(product_a) + 1];
     strcpy(product_name, product_a);
@@ -25,6 +29,7 @@ int product::add_product_p(char * product_a, char * seller_a){
     return stack_push();
 }
 
+//Perform push this information into the stack of product
 int product::stack_push(){
     if(!top_prod){
         stack_p * temp = new stack_p();
@@ -42,10 +47,12 @@ int product::stack_push(){
     return 1;
 };
 
+//This is the display function that can be call in public, then will sent the top stack information
 int product::display_product(){
     return display_product_p(top_prod);
 };
 
+//Private one to use the top information and traverse over the stack from top to bottom
 int product::display_product_p(stack_p * curr){
     if(!curr){
         cout << "Nothing in the product" << endl;
@@ -58,6 +65,7 @@ int product::display_product_p(stack_p * curr){
     return display_product_p(curr->next);
 };
 
+//This one is to check that the product that buyer want to buy is in the system or not
 char * product::check_product(char * product_n){
     if(!product_n) return 0;
     char * prod_n = new char[strlen(product_n)+1];
@@ -82,6 +90,7 @@ char * product::check_product(stack_p * curr, char * prod_n){
 
 };
 
+//this one is to get the next object
 stack_p * product::get_next(){
   return top_prod;
 };
@@ -93,9 +102,12 @@ stack_p * product::get_next(stack_p * curr){
   return curr;
 };
 
+//Stack product class
+//constuctor
 stack_p::stack_p(){
     next = NULL;
 };
+//deconstuctor
 stack_p::~stack_p(){
     if(next){
         stack_p * temp = new stack_p();
@@ -104,10 +116,14 @@ stack_p::~stack_p(){
     }
 };
 
+
+//Order structure
+//constructor
 order::order(){
     order_buyer = order_name = order_seller = order_method = NULL;
     next = NULL;
 };
+//deconstructor
 order::~order(){
     if(order_name) delete [] order_name;
     if(order_buyer) delete [] order_buyer;
@@ -120,6 +136,7 @@ order::~order(){
     }
 };
 
+//display the order information
 int order::display_order(){
   if(order_name){
     cout << "Product name: " << order_name << endl;
@@ -138,6 +155,8 @@ int order::display_order(){
   return 1;
 }
 
+//function to make a decision for distribution
+//conpare the location for the seller and buyer
 int order::shipping(char * product_n, user * buyer, user * seller){
     char * method_n;
 
@@ -160,12 +179,8 @@ int order::shipping(char * product_n, user * buyer, user * seller){
     return order_push(product_n,buyer,seller,method_n);
 };
 
+//This user to push all the order information into the object
 int order::order_push(char * product_n, user * buyer, user * seller, char * method_n){
-    cout << "Confirmation \n";
-    cout << product_n << endl;
-    cout << buyer->user_name << endl;
-    cout << seller->user_name <<endl;
-    cout << method_n << endl;
     cout << "==================================" << endl;
     
     order_name = new char[strlen(product_n) + 1];
@@ -187,10 +202,15 @@ order * order::get_next(order * curr){
    return curr;
 };
 
+//order list for all the order
+//This one is using LLL
+//constructor
 order_list::order_list(){
   head = NULL;
 
 };
+
+//deconstructor
 order_list::~order_list(){
   if(head){
     order * temp = new order;
@@ -199,6 +219,8 @@ order_list::~order_list(){
   }
 
 };
+
+//add the order into the list 
 int order_list::add_order(order & order_obj){
     order * add = new order();
     add->order_name = new char[strlen(order_obj.order_name) +1]; 
@@ -220,6 +242,7 @@ int order_list::add_order(order & order_obj){
     return 1;
 };
 
+//Display all the list, we will traverse for all the order inside of the list
 int order_list::display_list(){
     return display_list(head);
 };

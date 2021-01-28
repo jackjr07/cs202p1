@@ -7,17 +7,22 @@ This is the functionalities of the user section
 
 using namespace std;
 
+//Create user
+//constructor
 user::user(){
     user_name = user_city = user_state = NULL;
     user_status = 0;
 };
 
+//Deconstructor
 user::~user(){
     if(user_name) delete [] user_name;
     if(user_city) delete [] user_city;
     if(user_state) delete [] user_state;
     user_status = 0;
 };
+
+//Add user information
 int user::add_user(){
     char name[20];
     char city[10];
@@ -39,6 +44,7 @@ int user::add_user(){
     return add_user_p(name,city,state,status);
 };
 
+//This one is to allocate all the information in the user object
 int user::add_user_p(char * name, char * city, char * state, char * status){
     user_name = new char[strlen(name + 1)];
     strcpy(user_name,name);
@@ -52,7 +58,7 @@ int user::add_user_p(char * name, char * city, char * state, char * status){
 };
 
 
-
+//Display user
 int user::display_user(){
     if(user_name){
     cout << "Your name: " <<user_name << endl;
@@ -67,6 +73,8 @@ int user::display_user(){
     return 1;   
 };
 
+//This for to get the next user
+//Mainly for travese
 user * user::get_next(user * curr){
     if(curr->next){
         return get_next(curr->next);
@@ -75,10 +83,12 @@ user * user::get_next(user * curr){
 };
 
 //DATABASE SECTION
+//constructor
 database::database(){
    head = NULL; 
 };
 
+//deconstructor
 database::~database(){
     if(head){
         user * temp = new user;
@@ -87,6 +97,7 @@ database::~database(){
     }
 };
 
+//add user object information into database
 int database::add_database(user & user_obj_a){
     user * add = new user();
     add->user_name = user_obj_a.user_name;
@@ -106,6 +117,8 @@ int database::add_database(user & user_obj_a){
     cout << "Add User Succeess" << endl;
     return 1;
 };
+
+//Display all database, in database the stucture is LLL
 int database::display_database(){
    return display_database_p(head);
 };
@@ -121,32 +134,13 @@ int database::display_database_p(user * curr){
 
 };
 
+//This one is for seek the user information
 user * database::find_user(char * f_name){
     char * u_name = new char[strlen(f_name) + 1];
     strcpy(u_name, f_name);
     return find_user(head, u_name);
 };
-
-user * database::prod_find_user(char * f_name){
-    if(f_name){
-        cout << "passed to prod" <<f_name << endl;
-    }
-
-    return prod_find_user(head,f_name);
-};
-
-user * database::prod_find_user(user * curr, char * f_name){
-    if(!curr) {
-        cout << "Can't find user" << endl;
-        return 0;
-    }
-    
-    if(strcmp(f_name, curr->user_name) == 0){
-        return curr;
-    };
-    return prod_find_user(curr->next, f_name);
-};
-
+//This one is for traverse to find the match user, or prompt user that don't have this user in db
 user *  database::find_user(user * curr, char * u_name){
     if(!curr){
         cout << "No user in database" << endl;
@@ -157,5 +151,26 @@ user *  database::find_user(user * curr, char * u_name){
         return curr;
     };
     return find_user(curr->next, u_name);
+};
+
+//This one is to find the user information for the product
+//and return as user * because I will user their location information later
+user * database::prod_find_user(char * f_name){
+    if(!f_name) return 0;
+
+    return prod_find_user(head,f_name);
+};
+
+//This one will traverse in LLL ,to find the user 
+user * database::prod_find_user(user * curr, char * f_name){
+    if(!curr) {
+        cout << "Can't find user" << endl;
+        return 0;
+    }
+    
+    if(strcmp(f_name, curr->user_name) == 0){
+        return curr;
+    };
+    return prod_find_user(curr->next, f_name);
 };
 

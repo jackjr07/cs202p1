@@ -51,7 +51,7 @@ int main (){
             char * seller_n = product_obj.check_product(product_a);
             cout << "Your name: ";
             cin.get(buyer_n,20); cin.ignore(100,'\n');
-            cout << "============================";
+            cout << "============================" << endl;
             user * buyer = database_obj.prod_find_user(buyer_n);
             user * seller = database_obj.prod_find_user(seller_n);
             cout << "Buyer's location: " << buyer->user_city << endl;
